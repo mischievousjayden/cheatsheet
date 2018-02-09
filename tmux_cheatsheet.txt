@@ -1,0 +1,101 @@
+[ Sessions ]
+# Create a new session without a name
+tmux
+tmux new
+tmux new-session
+
+# Create a new session with a session name
+tmux new -s session_name
+
+# Create a new session with a session name and window name
+tmux new -s session_name -n window_name
+
+# Create a new session in the background
+tmux new -s session_name -d
+
+# List session
+tmux ls
+tmux list-sessions
+
+# Attach to a session
+tmux attach
+tmux attach -t session_name
+
+# Detach from the session (running in the background)
+prefix + d
+
+# Kill a session
+tmux kill-session -t session_name
+
+
+[ Windows ]
+# Create a window from within an existing tmux session
+prefix + c
+:new-window
+:new-window -n window_name
+
+# Create a window with command
+:new-window "command"
+
+# Display a prompt to rename a window
+prefix + ,
+
+# Move to the next window
+prefix + n
+
+# Move to the previous window
+prefix + p
+
+# Select windows by number
+prefix + 0...9
+
+# Display a selectable list of windows in the current session
+prefix + w
+
+# Search for a window that contains the text
+prefix + f
+
+# Close the current window after prompting for confirmation
+prefix + &
+
+
+[ Panes ]
+# Divide the current window in half vertically
+prefix + %
+
+# Divide the current window in half horizontally
+prefix + "
+
+# Navigate panes
+prefix + o
+prefix + direction-key
+
+# Momentarily display pane numbers in each pane
+prefix + q
+
+# Cycle through the various pane layouts
+# even-horizontal, even-vertical, main-horizontal, main-vertical, tiled
+prefix + spacebar
+
+# Close the current pane after prompting for confirmation
+prefix + x
+
+# Close the current pane without confirmantion
+exit
+
+
+[ Command Mode ]
+# Enger command mode
+prefix + :
+
+
+[ etc ]
+# Check tmux version
+tmux -V
+
+# Display time
+prefix + t
+
+# List all predefined tmux keybindings and the associated commands
+prefix + ?
+

@@ -1,101 +1,330 @@
-[ Sessions ]
-# Create a new session without a name
-tmux
-tmux new
-tmux new-session
+[ Basic ]
+    < Sessions >
+        # Create a new session without a name
+        tmux
+        tmux new
+        tmux new-session
 
-# Create a new session with a session name
-tmux new -s session_name
+        # Create a new session with a session name
+        tmux new -s session_name
 
-# Create a new session with a session name and window name
-tmux new -s session_name -n window_name
+        # Create a new session with a session name and window name
+        tmux new -s session_name -n window_name
 
-# Create a new session in the background
-tmux new -s session_name -d
+        # Create a new session in the background
+        tmux new -s session_name -d
 
-# List session
-tmux ls
-tmux list-sessions
+        # List session
+        tmux ls
+        tmux list-sessions
 
-# Attach to a session
-tmux attach
-tmux attach -t session_name
+        # Attach to a session
+        tmux attach
+        tmux attach -t session_name
 
-# Detach from the session (running in the background)
-prefix + d
+        # Detach from the session (running in the background)
+        prefix + d
 
-# Kill a session
-tmux kill-session -t session_name
-
-
-[ Windows ]
-# Create a window from within an existing tmux session
-prefix + c
-:new-window
-:new-window -n window_name
-
-# Create a window with command
-:new-window "command"
-
-# Display a prompt to rename a window
-prefix + ,
-
-# Move to the next window
-prefix + n
-
-# Move to the previous window
-prefix + p
-
-# Select windows by number
-prefix + 0...9
-
-# Display a selectable list of windows in the current session
-prefix + w
-
-# Search for a window that contains the text
-prefix + f
-
-# Close the current window after prompting for confirmation
-prefix + &
+        # Kill a session
+        tmux kill-session -t session_name
 
 
-[ Panes ]
-# Divide the current window in half vertically
-prefix + %
+    < Windows >
+        # Create a window from within an existing tmux session
+        prefix + c
+        :new-window
+        :new-window -n window_name
 
-# Divide the current window in half horizontally
-prefix + "
+        # Create a window with command
+        :new-window "command"
 
-# Navigate panes
-prefix + o
-prefix + direction-key
+        # Display a prompt to rename a window
+        prefix + ,
 
-# Momentarily display pane numbers in each pane
-prefix + q
+        # Move to the next window
+        prefix + n
 
-# Cycle through the various pane layouts
-# even-horizontal, even-vertical, main-horizontal, main-vertical, tiled
-prefix + spacebar
+        # Move to the previous window
+        prefix + p
 
-# Close the current pane after prompting for confirmation
-prefix + x
+        # Select windows by number
+        prefix + 0...9
 
-# Close the current pane without confirmantion
-exit
+        # Display a selectable list of windows in the current session
+        prefix + w
+
+        # Search for a window that contains the text
+        prefix + f
+
+        # Close the current window after prompting for confirmation
+        prefix + &
 
 
-[ Command Mode ]
-# Enger command mode
-prefix + :
+    < Panes >
+        # Divide the current window in half vertically
+        :split-window -h
+        prefix + %
+
+        # Divide the current window in half horizontally
+        :split-window -v
+        prefix + "
+
+        # Navigate panes
+        prefix + o
+        prefix + direction-key
+
+        # Momentarily display pane numbers in each pane
+        prefix + q
+
+        # Cycle through the various pane layouts
+        # even-horizontal, even-vertical, main-horizontal, main-vertical, tiled
+        prefix + spacebar
+
+        # Close the current pane after prompting for confirmation
+        prefix + x
+
+        # Close the current pane without confirmantion
+        exit
 
 
-[ etc ]
-# Check tmux version
-tmux -V
+    < Command Mode >
+        # Enger command mode
+        prefix + :
 
-# Display time
-prefix + t
+        # Read tmux config
+        :source-file file_name
 
-# List all predefined tmux keybindings and the associated commands
-prefix + ?
+
+    < etc >
+        # Check tmux version
+        tmux -V
+
+        # Display time
+        prefix + t
+
+        # Display the given text in the status message
+        :display message
+        :display-message messgae
+
+        # List all predefined tmux keybindings and the associated commands
+        prefix + ?
+
+
+[ Config ]
+    < basic >
+        # Set options for sessions
+        # flags
+        # -a: append values onto existing options
+        #     rather than replacing the option’s value.
+        # -g: set the option for all sessions
+        # -s:
+        set [flags] [option] [value]
+        set-option [flags] [option] [value]
+
+        # Set options for windows
+        # such as activity notifications, cursor movement,
+        # or other elements related to windows and panes
+        setw [option] [value]
+        set-window-option [option] [value]
+
+        # Create a keybinding that executes the specified command.
+        # can be shortened to bind.
+        # flags
+        # -r: create a keybinding that is repeatable,
+        #     meaning you only need to press the PREFIX key once,
+        #     and you can press the assigned key repeatedly afterwards.
+        #     This is useful for commands where you want to cycle
+        #     through elements or resize panes. Can be shortened to bind.
+        # -n: keybinding doesn't require pressing the prefix
+        bind-key [flags] [key] [command]
+
+        # Remove a defined keybinding
+        # so it can be bound to a different command. Can be shortened to unbind
+        unbind [key]
+        unbind-key [key]
+
+
+    < Prefix >
+        # Set the prefix key combination from C-b to C-a
+        set -g prefix C-a
+
+        # Free the original Ctrl-b prefix keybinding
+        unbind C-b
+
+        # Configure tmux to send the prefix
+        # when pressing the PREFIX combination twice consecutively
+        bind C-a send-prefix
+
+
+    < Index >
+        # Set the base index for windows to n instead of 0
+        set -g base-index n
+
+        # Set the base index for panes to n instead of 0
+        set -g pane-base-index n
+
+
+    < Keystroke Time >
+        # Set the amount of time (in milliseconds) tmux waits for a keystroke
+        # after pressing PREFIX
+        set -s escape-time n
+
+        # set repeat time
+        set -g repeat-time
+
+
+    < Reload Config >
+        # Set reload the file with Prefix r then display string
+        bind r source-file ~/.tmux.conf \; display "Reload tmux.conf"
+
+        # Set reload the file with C-r then display string
+        bind-key -n C-r source-file ~/.tmux.conf
+
+
+    < Pane & Window Config >
+        # Split panes on current path
+        bind - split-window -v -c "#{pane_current_path}"
+        bind | split-window -h -c "#{pane_current_path}"
+
+        # Move between panes with Prefix h,j,k,l
+        bind h select-pane -L
+        bind j select-pane -D
+        bind k select-pane -U
+        bind l select-pane -R
+
+        # Resize pane with Prefix H,J,K,L
+        bind -r H resize-pane -L 5
+        bind -r J resize-pane -D 5
+        bind -r K resize-pane -U 5
+        bind -r L resize-pane -R 5
+
+        # Quick window selection
+        bind -r C-h select-window -t :-
+        bind -r C-l select-window -t :+
+
+        # mouse support
+        set -g mouse [on|off]
+
+
+    < Color >
+        # Defines the terminal type for windows.
+        # Set the value of TERM, which other programs will use.
+        # screen-256color ensures the widest compatibility
+        # with programs originally written for the screen program.
+        set -g default-terminal "screen-256color"
+
+        # Sets the foreground and background color for the status line.
+        # colors: black, red, green, yellow, blue, magenta, cyan, white
+        #         or color[0...255]
+        # options: dim, bright (or bold), reverse, and blink
+        set -g status-style fg=[color],[option],bg=[color]
+        set -g status-style fg=white,bg=black
+        set -g status-style fg=white,bold,bg=black
+
+        # Set the foreground and background color of the window list
+        # in the status line.
+        # Uses the same options as status-style
+        setw -g window-status-style fg=[color],bg=[color]
+        setw -g window-status-style fg=cyan,bg=black
+
+        # Set the foreground and background color of the active window
+        # in the window list in the status line.
+        # Uses the same options as status-style.
+        setw -g window-status-current-style
+        setw -g window-status-current-style fg=white,bold,bg=red
+
+        # Set the foreground and background color of any window
+        # with background activity. Uses the same options as statusstyle.
+        setw -g window-status-activity-style
+
+
+    < Visual Style >
+        # Set the foreground and background color of the pane borders.
+        # Uses the same options as status-style
+        setw -g pane-border-style
+        setw -g pane-border-style fg=green,bg=black
+
+        # Sets the foreground and background color of the active pane’s border.
+        # Uses the same options as status-style.
+        setw -g pane-active-border-style
+        setw -g pane-active-border-style fg=white,bg=yellow
+
+        # Sets the foreground and background color of the window.
+        # Uses the same options as status-style.
+        setw -g window-style
+        setw -g window-style fg=colour240,bg=colour235
+
+        # Sets the foreground and background color of the active window.
+        # Uses the same options as status-style
+        setw -g window-active-style
+        setw -g window-active-style fg=white,bg=black
+
+        # Set the foreground and background color of the message area
+        # and tmux command line. Uses the same options as statusstyle
+        setw -g message-style
+        setw -g message-style fg=white,bold,bg=black
+
+
+    < Status Line >
+        # Status Line Variables
+        # #H Hostname of local host
+        # #h Hostname of local host without the domain name
+        # #F Current window flag
+        # #I Current window index
+        # #P Current pane index
+        # #S Current session name
+        # #T Current window title
+        # #W Current window name
+        # ## A literal #
+        # #(shell-command) First line of the shell command's output
+        # #[attributes] Color or attribute change
+
+        # Controls the number of visible characters
+        # in the left and right sides of the status line.
+        set -g status-length-left n
+        set -g status-length-right n
+
+        # Configures the items that appear
+        # in the left and right sides of the status line.
+        set -g status-left status_line_variables
+        set -g status-right status_line_variables
+
+        # Defines the refresh interval for the status line,
+        # where n is the number of seconds between refreshes.
+        set -g status-interval n
+
+        # set the placement of the window list in the status line.
+        set -g status-justify [left|centre|right]
+
+        # Looks for activity in other windows
+        # and highlights the name of the window with background activity.
+        setw -g monitor-activity [on|off]
+
+        # Displays a message in the message area
+        # when there is activity in another window.
+        set -g visual-activity [on|off]
+
+        ### EXAMPLE ###
+        # Status line left side to show session:window:pane
+        set -g status-left-length 40
+        set -g status-left "#[fg=green]Session: #S #[fg=yellow]#I #[fg=cyan]#P"
+
+        # Status line right side - DD-MON HH:MM
+        set -g status-right "#[fg=cyan]%d %b %R"
+
+        # Update the status line every sixty seconds
+        set -g status-interval 60
+
+        # Center the window list in the status line
+        set -g status-justify centre
+
+        # Enable activity alerts
+        setw -g monitor-activity on
+        set -g visual-activity on
+
+
+    < etc >
+        # comment
+        The line starting with # is a comment
+
 

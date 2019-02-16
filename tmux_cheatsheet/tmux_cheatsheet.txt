@@ -28,6 +28,12 @@
         # Kill a session
         tmux kill-session -t session_name
 
+        # use other tmux config
+        tmux -f <tmux_config>
+
+        # use other tmux config and it creates new session
+        tmux -f <tmux_config> attach
+
 
     < Windows >
         # Create a window from within an existing tmux session
@@ -62,10 +68,13 @@
 
     < Panes >
         # Divide the current window in half vertically
+        tmux split-window -h -t session_name
+        tmux split-window -h -p number_of_percentage -t session_name
         :split-window -h
         prefix + %
 
         # Divide the current window in half horizontally
+        tmux split-window -v -t session_name
         :split-window -v
         prefix + "
 
@@ -79,6 +88,8 @@
         # Cycle through the various pane layouts
         # even-horizontal, even-vertical, main-horizontal, main-vertical, tiled
         prefix + spacebar
+        tmux select-layout -t session_name layout_name
+        :select-layout layout_name
 
         # Close the current pane after prompting for confirmation
         prefix + x
@@ -109,14 +120,31 @@
         # List all predefined tmux keybindings and the associated commands
         prefix + ?
 
+        # Send key
+        tmux send-keys -t session_name:window_number.pane_number 'command_line' C-m
+
+        # Select window
+        tmux select-window -t session_name:window_number
+
+        # Select pane
+        tmux select-pane -t pane_number
+
 
 [ Config ]
     < basic >
+        # system config location
+        /etc/tmux.conf
+        # user config location
+        ~/.tmux.conf
+
+        # comment
+        The line starting with # is a comment
+
         # Set options for sessions
         # flags
         # -a: append values onto existing options
         #     rather than replacing the option’s value.
-        # -g: set the option for all sessions
+        # -g: set the option for global(all sessions)
         # -s:
         set [flags] [option] [value]
         set-option [flags] [option] [value]
@@ -151,6 +179,7 @@
         # Free the original Ctrl-b prefix keybinding
         unbind C-b
 
+        # Ensure that we can send Ctrl-A to other apps
         # Configure tmux to send the prefix
         # when pressing the PREFIX combination twice consecutively
         bind C-a send-prefix
@@ -161,7 +190,7 @@
         set -g base-index n
 
         # Set the base index for panes to n instead of 0
-        set -g pane-base-index n
+        setw -g pane-base-index n
 
 
     < Keystroke Time >
@@ -204,6 +233,9 @@
 
         # mouse support
         set -g mouse [on|off]
+        set -g mouse-select-pane [on|off]
+        set -g mouse-resize-pane [on|off]
+        set -g mouse-select-window [on|off]
 
 
     < Color >
@@ -215,8 +247,10 @@
 
         # Sets the foreground and background color for the status line.
         # colors: black, red, green, yellow, blue, magenta, cyan, white
-        #         or color[0...255]
+        #         or colour[0...255]
         # options: dim, bright (or bold), reverse, and blink
+        set -g status-fg [color]
+        set -g status-bg [color]
         set -g status-style fg=[color],[option],bg=[color]
         set -g status-style fg=white,bg=black
         set -g status-style fg=white,bold,bg=black
@@ -224,12 +258,18 @@
         # Set the foreground and background color of the window list
         # in the status line.
         # Uses the same options as status-style
+        setw -g window-status-fg [color]
+        setw -g window-status-bg [color]
+        setw -g window-status-attr [option]
         setw -g window-status-style fg=[color],bg=[color]
         setw -g window-status-style fg=cyan,bg=black
 
         # Set the foreground and background color of the active window
         # in the window list in the status line.
         # Uses the same options as status-style.
+        setw -g window-status-current-fg [color]
+        setw -g window-status-current-bg [color]
+        setw -g window-status-current-attr [option]
         setw -g window-status-current-style
         setw -g window-status-current-style fg=white,bold,bg=red
 
@@ -322,9 +362,28 @@
         setw -g monitor-activity on
         set -g visual-activity on
 
-
-    < etc >
-        # comment
-        The line starting with # is a comment
+    < example config >
+        example_tmux.conf
 
 
+[ Scripting ]
+    # example tmux script
+    example_tmux_script.sh
+
+    # example tmux script on config
+    example_tmux_script_config.txt
+
+    # tmuxinator: help managing tmux configuration
+
+
+[ Text and Buffer ]
+    prefix [ # enters copy mode
+    prefix ] # pastes current buffer contents
+    prefix = # list all paste buffers and pastes selected buffer contents
+
+
+
+
+
+[ reference ]
+- tmux2 productive mouse-free development - Brian P. Hogan

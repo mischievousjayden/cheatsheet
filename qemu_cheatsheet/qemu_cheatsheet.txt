@@ -1,0 +1,11 @@
+[ create disk image ]
+- raw
+- qcow2 (qemu copy on write)
+qemu-img create -f qcow2 <image_name> <size_in_gb>
+ex) qemu-img create -f qcow2 arch_vm.qcow2 100G
+
+[ start vm ]
+qemu -system-x86_64 -smp <number_of_cpu> -cdrom <iso_image> -boot order=d -m <mamory_size> -enable-kvm <disk_image_name> 
+(-boot order=d means boot cdrom first)
+ex) qemu-system-x86_64 -smp 1 -m 2G -enable-kvm -cdrom arch.iso -boot order=d arch_vm.qcow2
+ex) qemu-system-x86_64 -m 2G -enable-kvm arch_vm.qcow2

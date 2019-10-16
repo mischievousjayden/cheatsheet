@@ -42,7 +42,8 @@
         :new-window -n window_name
 
         # Create a window with command
-        :new-window "command"
+        :new-window command
+        :new-window -n window_name command
 
         # Display a prompt to rename a window
         prefix + ,

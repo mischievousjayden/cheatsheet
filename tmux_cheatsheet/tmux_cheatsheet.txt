@@ -212,6 +212,10 @@
 
 
     < Pane & Window Config >
+        # Split panes
+        bind - split-window -v
+        bind | split-window -h
+
         # Split panes on current path
         bind - split-window -v -c "#{pane_current_path}"
         bind | split-window -h -c "#{pane_current_path}"
@@ -252,6 +256,7 @@
         set -g default-terminal "screen-256color"
 
         # Sets the foreground and background color for the status line.
+        # check color with color.sh
         # colors: black, red, green, yellow, blue, magenta, cyan, white
         #         or colour[0...255]
         # options: dim, bright (or bold), reverse, and blink

@@ -22,7 +22,8 @@ fi
 tmux has-session -t $session_name
 if [ $? = 0 ]; then
     echo "session $session_name already exist"
-    exit 1
+    tmux attach -t $session_name
+    exit 0
 fi
 
 # create session 'development' and window 'editor' then detach

@@ -1,5 +1,12 @@
 [ Basic ]
     < Sessions >
+        # Create a new session
+        # options
+        # -s: session name
+        # -n: window name
+        # -d: detach session
+        tmux new|new-session [options]
+
         # Create a new session without a name
         tmux
         tmux new
@@ -380,9 +387,10 @@
 [ Scripting ]
     # example tmux script
     example_tmux_script.sh
+    example_tmux_script2.sh
 
     # example tmux script on config
-    example_tmux_script_config.txt
+    example_tmux_script.conf
 
     # tmuxinator: help managing tmux configuration
 
